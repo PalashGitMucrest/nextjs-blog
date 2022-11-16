@@ -1,0 +1,43 @@
+.listBtn{
+    cursor: pointer;
+    background-color: chocolate;
+    height: 2rem;
+    width: 4rem;
+    border: none;
+    margin:  1rem 0;
+}
+
+.description{
+    height: 6rem;
+    width: 80%;
+    /* background-color: aqua; */
+    /* border: 1px solid red; */
+}
+
+.description textarea{
+height: 100%;
+width: 100%;
+border: 0.08rem solid grey;
+}
+.saveDes button{
+    border: none;
+    background-color: rgb(70, 70, 216);
+    height: 2rem;
+    width: 3rem;
+    color: white;
+    margin-top: 0.3rem;
+    cursor: pointer;
+}
+.saveTitle{
+    background-color: blueviolet;
+    border: none;
+    cursor: pointer;
+    margin-left: 0.1rem;
+    height: 1.4rem;
+}
+
+.listItem1{
+    margin-top: 1rem;
+    background-color: rgb(206, 197, 197);
+    
+}

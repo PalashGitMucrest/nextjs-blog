@@ -1,0 +1,9 @@
+.widget_container {
+    display: flex;
+}
+
+.widget_container > * {
+    height: 400px;
+    width: 50%;
+    padding: 10px;
+}
