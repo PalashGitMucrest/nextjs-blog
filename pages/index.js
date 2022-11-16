@@ -6,6 +6,7 @@ import styles from '../styles/Home.module.css'
 
 export default function Home() {
   let todoInputRef = useRef();
+  let [inputVal, setInput] =  useState();
   let [arr1, setArr1] = useState([]);
   let [arr2, setArr2] = useState([]);
   let [arr3, setArr3] = useState([]);
@@ -18,14 +19,20 @@ export default function Home() {
     // console.log(todoInputRef.current.value);
 
     if (prior.p1 === true) {
-      setArr1((preVal) => [...preVal, todoInputRef.current.value]);
+      setArr1((preVal) => [...preVal, inputVal]);
+      
+
     }
     if (prior.p2 === true) {
-      setArr2((preVal) => [...preVal, todoInputRef.current.value]);
+      setArr2((preVal) => [...preVal, inputVal]);
+      
     }
     if (prior.p3 === true) {
-      setArr3((preVal) => [...preVal, todoInputRef.current.value]);
+      setArr3((preVal) => [...preVal, inputVal]);
+      
     }
+    // todoInputRef.current.value = '';
+    setInput('');
 
   }
  
@@ -44,7 +51,7 @@ export default function Home() {
             <div className={styles.inputDiv}>
               <div className={styles.childInp}>
                 <label>Add Task to your Todo</label>
-                <input type='text' placeholder='add todo' ref={todoInputRef} />
+                <input type='text' placeholder='add todo' onChange={(e)=>setInput(e.target.value)}  value={inputVal} />
               </div>
 
               <div className={`${styles.addBtn} ${styles.childInp}`}>
