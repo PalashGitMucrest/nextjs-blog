@@ -158,8 +158,23 @@
     padding: 0 1rem;
     /* margin-right: 1rem; */
   }
-  .descriptionCard{
+  .descriptionCard {
     font-size: smaller;
+    /* text-transform: capitalize;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; */
+    margin: 0;
+    text-transform: capitalize;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .descriptionCard p{
+    text-transform: capitalize;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .tooltip {
