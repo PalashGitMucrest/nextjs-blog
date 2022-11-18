@@ -25,8 +25,8 @@ const style = {
 
 
 const Lists = ({ setArr, arr, setArr2, arr2, setArr3, arr3 }) => {
-//     const [plannedTasksState, setPlannedTasks] = useState(plannedTasks);
-//   const [doingTasksState, setDoingTasks] = useState(doingTasks);
+    //     const [plannedTasksState, setPlannedTasks] = useState(plannedTasks);
+    //   const [doingTasksState, setDoingTasks] = useState(doingTasks);
     console.log();
     // let [listItems1, setL1] = useState([...arr]);
     let listItems2 = [...arr2];
@@ -34,6 +34,7 @@ const Lists = ({ setArr, arr, setArr2, arr2, setArr3, arr3 }) => {
 
     let listItems3 = [...arr3];
     const [open, setOpen] = React.useState(false);
+    const [openDone, setOpenDone] = React.useState(false);
     const [title, setTitle] = useState(null);
     const [ttleEdit, setTtle] = useState(false);
     const [index1, setIndex1] = useState(-1);
@@ -44,50 +45,57 @@ const Lists = ({ setArr, arr, setArr2, arr2, setArr3, arr3 }) => {
     let [dragIndex1, setDIndex1] = useState();
     const [id, setId] = useState(1);
     let [flag, setFlag] = useState(0);
+    let [descArea, setdescArea] = useState('');
 
 
     const handleOpen = (e, i, flag) => {
         console.log(flag);
         if (flag === 1) {
             setOpen(true);
-            setTitle(e);
+            setTitle(e.task);
             setIndex1(i);
             setId(flag);
+            setdescArea(listItems1[i].description);
         }
         if (flag === 2) {
             setOpen(true);
-            setTitle(e);
+            setTitle(e.task);
             setIndex2(i);
             setId(flag);
+            setdescArea(listItems2[i].description);
         }
         if (flag === 3) {
             setOpen(true);
-            setTitle(e);
+            setTitle(e.task);
             setIndex3(i);
             setId(flag);
+            setdescArea(listItems3[i].description);
         }
     };
     const dragStart = (e, index, i) => {
         // e.preventDefault();
-        if(i===1){
+        if (i === 1) {
             console.log('dragStart triggered');
-        setItem(listItems1[index]);
-        setDIndex1(index);
-        setFlag(i);
+            setItem(listItems1[index]);
+            setDIndex1(index);
+            setFlag(i);
         }
-        if(i===2){
+        if (i === 2) {
             console.log('dragStart triggered');
-        setItem(listItems2[index]);
-        setDIndex1(index);
-        setFlag(i);
+            setItem(listItems2[index]);
+            setDIndex1(index);
+            setFlag(i);
         }
-        if(i===3){
+        if (i === 3) {
             console.log('dragStart triggered');
-        setItem(listItems3[index]);
-        setDIndex1(index);
-        setFlag(i);
+            setItem(listItems3[index]);
+            setDIndex1(index);
+            setFlag(i);
         }
-        
+
+    }
+    const handleCloseDone = () => {
+        setOpenDone(false);
     }
     const handleClose = () => {
 
@@ -150,180 +158,322 @@ const Lists = ({ setArr, arr, setArr2, arr2, setArr3, arr3 }) => {
 
     }
 
-    const drop = (e)=>{
+    const drop = (e) => {
 
-        setDoneArr(preVal=>{return [...preVal,dragItem]});
-        if(flag===1){
-            let dArr=[...listItems1];
-        dArr.splice(dragIndex1,1);
-        setArr(dArr);
+        setDoneArr(preVal => { return [...preVal, dragItem] });
+        if (flag === 1) {
+            let dArr = [...listItems1];
+            dArr.splice(dragIndex1, 1);
+            setArr(dArr);
         }
-        if(flag===2){
-            let dArr=[...listItems2];
-        dArr.splice(dragIndex1,1);
-        setArr2(dArr);
+        if (flag === 2) {
+            let dArr = [...listItems2];
+            dArr.splice(dragIndex1, 1);
+            setArr2(dArr);
         }
-        if(flag===3){
-            let dArr=[...listItems3];
-        dArr.splice(dragIndex1,1);
-        setArr3(dArr);
+        if (flag === 3) {
+            let dArr = [...listItems3];
+            dArr.splice(dragIndex1, 1);
+            setArr3(dArr);
         }
         setIndex1(-1);
         setFlag(0);
 
-        
-    
-      }
 
-      function allowDrop(ev) {
+
+    }
+
+    function allowDrop(ev) {
         ev.preventDefault();
-      }
+    }
+
+    function onDescSave(e) {
+        if (id === 1) {
+            let dArr = [...listItems1];
+            console.log(index1);
+            dArr[index1].description = descArea;
+            setArr(dArr);
+        }
+        if (id === 2) {
+            let dArr = [...listItems2];
+            console.log(index2);
+            dArr[index2].description = descArea;
+            setArr(dArr);
+        }
+        if (id === 3) {
+            let dArr = [...listItems3];
+            console.log(index3);
+            dArr[index3].description = descArea;
+            setArr(dArr);
+        }
+        setOpen(false);
+    }
+
+    function deleteDoneItem(i){
+        let newArr = [...doneArr];
+        newArr.splice(i, 1);
+        setDoneArr(newArr);
+    }
 
 
 
-    
+
 
     return (
         <>
+        
 
-            <div className={styles1.parentList}>
-                <div>
-                <div className={styles1.containerParent}>
-                <div className={styles1.container_list}>
-   
-                    <div className={styles1.listContainer}>
-                        <div className={styles1.pHigh}></div>
+            <div className={styles1.containerParent}>
+            
+
+                <div className={styles1.listContainer}>
+                    <div className={styles1.pHigh}></div>
+                    
                     <span>Priority: high</span>
-                        {
-                            listItems1?.map((e, i) => {
-                                return (
-                                    <div key={i} draggable='true' className={styles.listItem1} onDragStart={(e) => dragStart(e,i,1)}>
-                                        <Button onClick={() => (handleOpen(e, i, 1))} >{e}</Button>
+                    
+                    {
+                        listItems1?.map((e, i) => {
+                            return (
+                                <div key={i} draggable='true' className={styles.listItem1} onDragStart={(e) => dragStart(e, i, 1)}>
+                                    <div>
+                                        <div className={styles.detailCard1}>
+                                            <div className={styles.taskTitle}>
+                                               
+                                                    <p onClick={() => (handleOpen(e, i, 1))} className={styles.detailNmae}>
+                                                        {e.task}
+                                                    </p>
+                                      
+                                            </div>
 
-                                        <EditIcon onClick={() => (handleOpen(e, i, 1))} sx={{
-                                            color: 'green',
-                                            fontSize: "1rem",
-                                            position: "relative",
-                                            top: "0.08rem",
-                                            cursor: "pointer",
-                                            "&:hover": { color: 'green' },
-                                        }} ></EditIcon>
+                                            <div className={styles.button_outer}>
 
-                                        <DeleteIcon onClick={() => (deleteItem(i, 1))} sx={{
-                                            color: 'red',
-                                            fontSize: "1rem",
-                                            position: "relative",
-                                            top: "0.08rem",
-                                            cursor: "pointer",
-                                            "&:hover": { color: 'red' },
-                                        }} ></DeleteIcon>
+                                                <EditIcon className={styles.editButton} onClick={() => (handleOpen(e, i, 1))} sx={{
+                                                    // color: 'green',
+                                                    // fontSize: "1rem",
+                                                    // position: "relative",
+                                                    // top: "0.08rem",
+                                                    // cursor: "pointer",
+                                                    // "&:hover": { color: 'green' },
+                                                }} ></EditIcon>
 
-
+                                                <DeleteIcon className={styles.deleteButton} onClick={() => (deleteItem(i, 1))} sx={{
+                                                    // color: 'red',
+                                                    // fontSize: "1rem",
+                                                    // position: "relative",
+                                                    // top: "0.08rem",
+                                                    // cursor: "pointer",
+                                                    // "&:hover": { color: 'red' },
+                                                }} ></DeleteIcon>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className={styles.stsAndDesc}>
+                                        <div className={styles.descriptionCard}>
+                                            <h4>
+                                                description
+                                            </h4>
+                                            <p>
+                                                {e.description}
+                                            </p>
+                                        </div>
+                                        <div className={styles.stsHigh}>
+                                            high
+                                        </div>
                                     </div>
 
-                                )
-                            })
-                        }
-                    </div>
+                                    
+
+                                </div>
+
+                            )
+                        })
+                    }
                 </div>
 
 
-                <div>
-                    <div className={styles1.listContainer}>
+
+
+                <div className={styles1.listContainer}>
                     <div className={styles1.pMed}></div>
                     <span>Priority: medium</span>
-                        {
-                            listItems2?.map((e, i) => {
-                                return (
-                                    <div key={i} draggable='true' className={styles.listItem1} onDragStart={(e) => dragStart(e,i,2)} >
-                                        <Button onClick={() => (handleOpen(e, i, 2))} >{e}</Button>
-
-                                        <EditIcon onClick={() => (handleOpen(e, i, 2))} sx={{
-                                            color: 'green',
-                                            fontSize: "1rem",
-                                            position: "relative",
-                                            top: "0.08rem",
-                                            cursor: "pointer",
-                                            "&:hover": { color: 'green' },
-                                        }} ></EditIcon>
-
-                                        <DeleteIcon onClick={() => (deleteItem(i, 2))} sx={{
-                                            color: 'red',
-                                            fontSize: "1rem",
-                                            position: "relative",
-                                            top: "0.08rem",
-                                            cursor: "pointer",
-                                            "&:hover": { color: 'red' },
-                                        }} ></DeleteIcon>
-
-
+                    {
+                        listItems2?.map((e, i) => {
+                            return (
+                                <div key={i} draggable='true' className={styles.listItem1} onDragStart={(e) => dragStart(e, i, 2)} >
+                                    <div >
+                                        <div className={styles.detailCard1}>
+                                            <div >
+                                                {/* <Button onClick={() => (handleOpen(e, i, 2))} > */}
+                                                <p className={styles.detailNmae} onClick={() => (handleOpen(e, i, 1))}>
+                                                        {e.task}
+                                                    </p>
+                                                {/* </Button> */}
+                                            </div>
+                                            <div className={styles.button_outer}>
+                                                <EditIcon className={styles.editButton} onClick={() => (handleOpen(e, i, 2))} sx={{
+                                                    // color: 'green',
+                                                    // fontSize: "1rem",
+                                                    // position: "relative",
+                                                    // top: "0.08rem",
+                                                    // cursor: "pointer",
+                                                    // "&:hover": { color: 'green' },
+                                                }} ></EditIcon>
+                                                <DeleteIcon className={styles.deleteButton} onClick={() => (deleteItem(i, 2))} sx={{
+                                                    // color: 'red',
+                                                    // fontSize: "1rem",
+                                                    // position: "relative",
+                                                    // top: "0.08rem",
+                                                    // cursor: "pointer",
+                                                    // "&:hover": { color: 'red' },
+                                                }} ></DeleteIcon>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                )
-                            })
-                        }
-                    </div>
+
+
+                                    <div className={styles.stsAndDesc}>
+                                        <div className={styles.descriptionCard}>
+                                            <h4>
+                                                description
+                                            </h4>
+                                            <p>
+                                                {e.description}
+                                            </p>
+                                        </div>
+                                        <div className={styles.sts}>
+                                            medium
+                                        </div>
+                                    </div>
+                                    
+
+                                </div>
+                            )
+                        })
+                    }
                 </div>
 
 
-                <div>
-                    
-                    <div className={styles1.listContainer}>
+
+
+                <div className={styles1.listContainer}>
                     <div className={styles1.pLow}></div>
                     <span>Priority: low</span>
-                        {
-                            listItems3?.map((e, i) => {
-                                return (
-                                    <div key={i} draggable='true' className={styles.listItem1}  onDragStart={(e) => dragStart(e,i,3)}>
-                                        <Button onClick={() => (handleOpen(e, i, 3))} >{e}</Button>
+                    {
+                        listItems3?.map((e, i) => {
+                            return (
+                                <div key={i} draggable='true' className={styles.listItem1} onDragStart={(e) => dragStart(e, i, 3)}>
 
-                                        <EditIcon onClick={() => (handleOpen(e, i, 3))} sx={{
-                                            color: 'green',
-                                            fontSize: "1rem",
-                                            position: "relative",
-                                            top: "0.08rem",
-                                            cursor: "pointer",
-                                            "&:hover": { color: 'green' },
-                                        }} ></EditIcon>
+                                    <div>
+                                        <div className={styles.detailCard1}>
+                                            <div>
+                                                <p className={styles.detailNmae} onClick={() => (handleOpen(e, i, 3))} >{e.task}</p>
+                                            </div>
+                                            <div className={styles.button_outer}>
+                                                <EditIcon className={styles.editButton} onClick={() => (handleOpen(e, i, 3))} sx={{
+                                                    // color: 'green',
+                                                    // fontSize: "1rem",
+                                                    // position: "relative",
+                                                    // top: "0.08rem",
+                                                    // cursor: "pointer",
+                                                    // "&:hover": { color: 'green' },
+                                                }} ></EditIcon>
 
-                                        <DeleteIcon onClick={() => (deleteItem(i, 3))} sx={{
-                                            color: 'red',
-                                            fontSize: "1rem",
-                                            position: "relative",
-                                            top: "0.08rem",
-                                            cursor: "pointer",
-                                            "&:hover": { color: 'red' },
-                                        }} ></DeleteIcon>
+                                                <DeleteIcon className={styles.deleteButton} onClick={() => (deleteItem(i, 3))} sx={{
+                                                    // color: 'red',
+                                                    // fontSize: "1rem",
+                                                    // position: "relative",
+                                                    // top: "0.08rem",
+                                                    // cursor: "pointer",
+                                                    // "&:hover": { color: 'red' },
+                                                }} ></DeleteIcon>
+                                            </div>
 
+
+
+
+                                        </div>
+                                    </div>
+                                    <div className={styles.stsAndDesc}>
+                                        <div className={styles.descriptionCard}>
+                                            <h4>
+                                                description
+                                            </h4>
+                                            <p>
+                                                {e.description}
+                                            </p>
+                                        </div>
+                                        <div className={styles.stsLow}>
+                                            low
+                                        </div>
 
                                     </div>
 
-                                )
-                            })
-                        }
 
-                    </div>
+
+
+
+                                    
+                                </div>
+
+                            )
+                        })
+                    }
+
+
                 </div>
+
+                <div className={styles1.donePage} onDragOver={(e) => allowDrop(e)} onDrop={(e) => drop(e)}>
+                
+                    <div className={styles1.complete}></div>
+                    <div className={styles.iBtn}>
+                                        <div className={styles.tooltip}>i
+                                            <span className={styles.tooltiptext}>Drag rop Tasks in Complete</span>
+                                        </div>
+                                    </div>
+                    <h5>Complete</h5>
+                    
+                    {
+                        doneArr?.map((e, i) => {
+                            return (
+
+                                <>
+                                    <div className={styles1.doneTask} key={i}>
+                                        <div className={styles1.taskName}>
+                                            <p>
+
+                                                {e.task}
+                                            </p>
+                                        </div>
+                                        <div className={styles1.desname}>
+                                            <p>
+
+                                                {e.description}
+                                            </p>
+                                        </div>
+                                        <DeleteIcon className={styles1.deleteButton} onClick={() => (deleteDoneItem(i))} sx={{
+                                            // color: 'red',
+                                            // fontSize: "1rem",
+                                            // position: "relative",
+                                            // top: "0.08rem",
+                                            // cursor: "pointer",
+                                            // "&:hover": { color: 'red' },
+                                        }} ></DeleteIcon>
+                                    </div>
+
+                                </>
+
+                            )
+                        })
+                    }
+                </div>
+                
             </div>
-            
-                </div>
-                <div>
-                <div className={styles1.donePage} onDragOver={(e)=>allowDrop(e)} onDrop={(e)=>drop(e)}>
-          <h4>Tasks Done</h4>
-          {
-            doneArr?.map((e,i)=>{
-              return (
 
-<div className={styles1.doneTask} key={i}>
-            {e}
-          </div>
 
-              )
-            })
-          }
-        </div>
-                </div>
-            </div>
+
+
+
 
             <Modal
                 open={open}
@@ -337,13 +487,13 @@ const Lists = ({ setArr, arr, setArr2, arr2, setArr3, arr3 }) => {
                         {
                             !ttleEdit &&
                             <p>{title}
-                                <EditIcon onClick={() => { setTtle(true) }} sx={{
-                                    color: 'green',
-                                    fontSize: "1rem",
-                                    position: "relative",
-                                    top: "0.08rem",
-                                    cursor: "pointer",
-                                    "&:hover": { color: 'green' },
+                                <EditIcon className={styles.editButton} onClick={() => { setTtle(true) }} sx={{
+                                    // color: 'green',
+                                    // fontSize: "1rem",
+                                    // position: "relative",
+                                    // top: "0.08rem",
+                                    // cursor: "pointer",
+                                    // "&:hover": { color: 'green' },
                                 }} ></EditIcon>
                             </p>
                         }
@@ -356,11 +506,39 @@ const Lists = ({ setArr, arr, setArr2, arr2, setArr3, arr3 }) => {
                     </div>
                     <div>Description</div>
                     <div className={styles.description}>
-                        <textarea type='text' />
+                        <textarea type='text' value={descArea} onChange={(e) => setdescArea(e.target.value)} />
                     </div>
                     <div className={styles.saveDes}>
-                        <button>Save</button>
+                        <button onClick={(e) => onDescSave(e)}>Save</button>
                     </div>
+                </Box>
+            </Modal>
+            <Modal
+                open={openDone}
+                onClose={handleCloseDone}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <div>
+                        <span>Task</span>
+                        {
+                            !ttleEdit &&
+                            <p>{title}
+                                <EditIcon className={styles.editButton} onClick={() => { setTtle(true) }} sx={{
+                                    // color: 'green',
+                                    // fontSize: "1rem",
+                                    // position: "relative",
+                                    // top: "0.08rem",
+                                    // cursor: "pointer",
+                                    // "&:hover": { color: 'green' },
+                                }} ></EditIcon>
+                            </p>
+                        }
+
+                    </div>
+                    <div>Description</div>
+
                 </Box>
             </Modal>
         </>

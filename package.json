@@ -16,7 +16,7 @@
     "@mui/styled-engine-sc": "^5.10.6",
     "devexpress-diagram": "0.1.54",
     "devexpress-gantt": "0.0.29",
-    "devextreme": "20.1",
+    "devextreme": "^20.2.12",
     "eslint": "8.27.0",
     "eslint-config-next": "13.0.3",
     "next": "13.0.3",
